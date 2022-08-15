@@ -14,8 +14,12 @@ class ReposStore: ObservableObject {
             "Accept": "application/vnd.github.v3+json"
         ]
 
-        let (data, _) = try! await URLSession.shared.data(for: urlRequest) 
+        let (data, _) = try! await URLSession.shared.data(for: urlRequest)
         
+        let decoder = JSONDecoder()
+        decoder.keyDecodingStrategy = .convertFromSnakeCase
+        let value = try! decoder.decode([Repo].self, from: data)
+        repos = value
     }
 }
 
